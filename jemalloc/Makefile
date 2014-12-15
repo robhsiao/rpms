@@ -1,4 +1,4 @@
-spec = luv-luajit.spec
+spec = luv-jemalloc.spec
 all: build dist
 
 download:

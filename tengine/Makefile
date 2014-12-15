@@ -1,4 +1,4 @@
-spec = luv-luajit.spec
+spec = luv-tengine.spec
 all: build dist
 
 download:
