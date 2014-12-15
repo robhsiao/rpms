@@ -34,7 +34,7 @@ Requires:	luv-luajit, jemalloc, logrotate
         --error-log-path=/var/log/nginx/error.log \
         --user=luv \
         --group=luv \
-	--dso-path=/var/lib/nginx/modules \
+        --dso-path=/var/lib/nginx/modules \
         --http-client-body-temp-path=%{_tmppath}/nginx/client_body/ \
         --http-proxy-temp-path=%{_tmppath}/nginx/proxy/ \
         --http-fastcgi-temp-path=%{_tmppath}/nginx/fastcgi/ \
