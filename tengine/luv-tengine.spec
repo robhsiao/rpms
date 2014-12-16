@@ -73,13 +73,19 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc
-%{_sbindir}/
-%{_sysconfdir}/nginx/
-%{_localstatedir}/www/html/
+/usr/sbin/nginx
+/usr/sbin/dso_tool
+%config(noreplace) /etc/nginx/
 %{_includedir}/nginx/
-%{_tmppath}/nginx/
-/var/log/nginx
+/var/www/html/
+/var/log/nginx/
+/var/lib/nginx/modules/
+
+%pre
+id luv >& /dev/null
+if [ $? -gt 0 ]; then
+    useradd luv
+fi
 
 %post
 # http://www.ibm.com/developerworks/library/l-rpm2/
@@ -90,16 +96,19 @@ if [ "$1" = "1" ]; then
     install -d /var/tmp/nginx/fastcgi/
     install -d /var/tmp/nginx/uwsgi/
     install -d /var/tmp/nginx/scgi/
-    /sbin/service nginx start
+
+    test -x /etc/init.d/nginx && /etc/init.d/nginx start
 else
-    /sbin/service nginx reload
+    test -x /etc/init.d/nginx && /etc/init.d/nginx reload
 fi
+true
 
 %preun
 if [ "$1" = "0" ]; then
-    /sbin/service nginx stop
-else
+    test -x /etc/init.d/nginx && /etc/init.d/nginx stop
+    rm -rf /var/tmp/nginx
 fi
+true
 
 %changelog
 

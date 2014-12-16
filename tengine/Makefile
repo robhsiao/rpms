@@ -4,7 +4,7 @@ all: build dist
 download:
 	spectool -g -R $(spec)
 
-rebuild: download
+rebuild:
 	rpmbuild --short-circuit -bi $(spec)
 
 build: download
