@@ -8,7 +8,7 @@ License:	BSD
 URL:		http://tengine.taobao.org/
 Source0:	http://tengine.taobao.org/download/tengine-%{version}.tar.gz
 Source1:    init.d
-# Source1:        nginx.logrotate
+Source2:    logrotate.d
 BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
 BuildRequires:	gcc,pcre-devel,zlib-devel,openssl-devel,GeoIP-devel,jemalloc-devel,luv-luajit
@@ -62,12 +62,14 @@ make %{?_smp_mflags}
 rm -rf %{buildroot}
 make install DESTDIR=%{buildroot}
 
-#install -m 755 %{_sourcedir}
-mkdir -p %{buildroot}/etc/init.d/
-install -m 0755 %{SOURCE1} %{buildroot}/etc/init.d/nginx
+%{__mkdir_p} %{buildroot}/etc/init.d/
+%{__install} -m 0755 %{SOURCE1} %{buildroot}/etc/init.d/nginx
 
-install -d %{buildroot}/etc/nginx/vhosts/
-install -d %{buildroot}/var/log/nginx/
+%{__mkdir_p} %{buildroot}/etc/logrotate.d/
+%{__install} -m 0644 %{SOURCE2} %{buildroot}/etc/logrotate.d/nginx
+
+%{__install} -d %{buildroot}/etc/nginx/vhosts/
+%{__install} -d %{buildroot}/var/log/nginx/
 
 %clean
 rm -rf %{buildroot}
@@ -79,6 +81,7 @@ rm -rf %{buildroot}
 /usr/sbin/dso_tool
 %config(noreplace) /etc/nginx/
 /etc/init.d/nginx
+/etc/logrotate.d/nginx
 %{_includedir}/nginx/
 /var/www/html/
 /var/log/nginx/
