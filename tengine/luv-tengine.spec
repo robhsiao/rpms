@@ -7,7 +7,7 @@ Group:		System Environment/Daemons
 License:	BSD
 URL:		http://tengine.taobao.org/
 Source0:	http://tengine.taobao.org/download/tengine-%{version}.tar.gz
-# Source1:        nginx.init
+Source1:    init.d
 # Source1:        nginx.logrotate
 BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
@@ -63,9 +63,11 @@ rm -rf %{buildroot}
 make install DESTDIR=%{buildroot}
 
 #install -m 755 %{_sourcedir}
+mkdir -p %{buildroot}/etc/init.d/
+install -m 0755 %{SOURCE1} %{buildroot}/etc/init.d/nginx
+
 install -d %{buildroot}/etc/nginx/vhosts/
 install -d %{buildroot}/var/log/nginx/
-
 
 %clean
 rm -rf %{buildroot}
@@ -76,6 +78,7 @@ rm -rf %{buildroot}
 /usr/sbin/nginx
 /usr/sbin/dso_tool
 %config(noreplace) /etc/nginx/
+/etc/init.d/nginx
 %{_includedir}/nginx/
 /var/www/html/
 /var/log/nginx/

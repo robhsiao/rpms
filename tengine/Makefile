@@ -2,6 +2,7 @@ spec = luv-tengine.spec
 all: build dist
 
 download:
+	cp -R SOURCES/* ~/rpmbuild/SOURCES/
 	spectool -g -R $(spec)
 
 rebuild:
